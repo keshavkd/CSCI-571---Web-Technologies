@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/wishRec"
+            android:layout_width="match_parent"
+            android:layout_height="492dp"
+            android:visibility="visible">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/nowishrec"
+            android:layout_width="match_parent"
+            android:layout_height="492dp"
+            android:gravity="center"
+            android:text="No Records to show."
+            android:visibility="gone" />
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/br_orange"
+            android:visibility="visible"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@android:style/TextAppearance.Small">
+
+            <TextView
+                android:id="@+id/wishTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wishlist total"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/wishPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:text="Price: "
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+
+
+</LinearLayout>

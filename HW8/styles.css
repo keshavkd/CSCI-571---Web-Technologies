@@ -1,0 +1,144 @@
+
+
+*, body, html {
+	margin: 0px;
+	padding: 0px;
+}
+
+.mainContainer {
+	width: 75%;
+	margin: 20px auto;
+	border-radius: 5px;
+	padding-bottom: 10px;
+}
+
+.formContainer {
+    width: 65%;
+    margin: 20px auto;
+}
+
+.button-class-group {
+    margin: 0px auto;
+}
+
+.page-link {
+	color: black;
+	border: none;
+}
+
+.page-item:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#linext.page-item.disabled:hover {
+	cursor: default;
+	text-decoration: none;
+}
+
+#liprev.page-item.disabled:hover {
+	cursor: default;
+	text-decoration: none;
+}
+
+.page-item.active .page-link {
+	background-color: #1d2124 !important;
+	cursor: pointer;
+	color: white !important;
+	border: none;
+}
+
+td {
+	font-size: 14px;
+}
+
+.navB {
+	font-size: 14px !important; 
+	border: none; 
+	box-shadow: none;
+	padding-left: 6px !important;
+	padding-right: 6px !important;
+}
+
+.navB.active {
+	background-color: #1d2124 !important;
+	color: white !important;
+}
+
+#sTab tbody th {
+	width: 50% !important;
+}
+
+.imgNav {
+	position: absolute;
+	vertical-align: middle;
+	color: white;
+	background: grey;
+}
+
+.imgNav:hover {
+	cursor: pointer;
+	background: black;
+}
+
+@media (max-width: 1920px) {
+	#googleImg {
+  	   -moz-column-count:    3;
+	   -webkit-column-count: 3;
+	   column-count:         3;
+	}
+}
+
+@media (max-width: 800px) {
+	#googleImg {
+  	   -moz-column-count:    2;
+	   -webkit-column-count: 2;
+	   column-count:         2;
+	}
+}
+
+@media (max-width: 480px) {
+	#googleImg {
+  	   -moz-column-count:    1;
+	   -webkit-column-count: 1;
+	   column-count:         1;
+	}
+}
+
+#googleImg img {
+	border: 8px solid black;
+	margin-top: 6px;
+	margin-bottom: 12px; 
+	padding: 4px;
+	width: 100% !important;
+  	height: auto !important;
+}
+
+#simtab1, #simtab2 {
+	border-collapse: separate !important; 
+    border-spacing:0 10px !important;
+    border: none !important;
+    background-color: white !important;
+    margin-bottom: 0px !important;
+}
+
+#simtab1 tr, #simtab2 tr {
+	background-color: #343a40 !important;
+}
+
+#circle {
+	width: 30px;
+	height: 30px;
+	border: 3px solid green;
+	border-radius: 50%;
+	text-align: center;
+	background: transparent;
+}
+
+#zipli {
+	transition: 0.3s
+}
+
+#zipli:hover {
+	background-color: #EEEEEE;
+}

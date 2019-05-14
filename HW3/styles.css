@@ -1,0 +1,198 @@
+html {
+	margin: 0;
+	padding: 0;
+	font-family: Trebuchet MS, Arial, sans-serif;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	background-color: black;
+}
+
+.container.one {
+	background: url(http://csci571.com/hw/hw3/images/snow1.jpg);
+	top: 0;
+	height: 988px;
+	width: 1205px;
+	position: absolute;
+	background-position: -165px 0px;
+	background-size: 1575px 1050px;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+}
+
+.container.two {
+	background-color: white;
+	top: 988px;
+	height: 1420px;
+	width: 1205px;
+	/*left: 5%;*/
+	position: absolute;
+}
+
+.container.three {
+	background: url(http://csci571.com/hw/hw3/images/snow6.jpg);
+	top: 2408px;
+	height: 900px;
+	width: 1205px;
+	/*left: 5%;*/
+	position: absolute;
+	background-position: -307px -90px;
+	/*background-position: center;*/
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+}
+
+.container.four {
+	position: absolute;
+	top: 3308px;
+	height: 240px;
+	width: 1205px;
+	background-color: white;
+}
+
+.container.one:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.container.three:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.15);
+}
+
+
+.navbar h1 {
+	color: white;
+	font-size: 36px;
+	position: relative;
+	margin-top: 35px;
+	margin-left: 100px;
+	text-align: center;
+	letter-spacing: 7px;
+	font-weight: bold;
+	float: left;
+	text-transform: uppercase;
+}
+
+.navbar ul {
+	margin-top: 45px;
+	margin-right: 125px;
+	position: relative;
+	display: block;
+	list-style: none;
+	float: right;
+}
+
+.navbar ul li {
+	margin-left: 20px;
+	float: left;
+	display: list-item;
+	display: list-item;
+}
+
+.navbar ul li a {
+	font-size: 12px;
+	letter-spacing: 3px;
+	color: white;
+	font-weight: bolder;
+	text-decoration: none;
+}
+
+.content1 h1 {
+	color: white;
+	font-size: 102px;
+	width: 450px;
+	position: relative;
+	font-weight: bold;
+	text-align: center;
+	top: 150px;
+	left: 380px;
+}
+
+.content1 p {
+	color: white;
+	font-size: 24px;
+	max-width: 650px;
+	position: relative;
+	text-align: center;
+	top: 140px;
+	left: 280px;
+	line-height: 1.6em;
+}
+
+.content1 .b1 {
+	position: relative;
+	border: none;
+	background-color: white;
+	cursor: pointer;
+	padding: 22px 33px;
+	top: 150px;
+	left: 520px;
+}
+
+.b1 a {
+	font-size: 14px;
+	font-family: Trebuchet MS;
+	letter-spacing: 1px;
+	color: black;
+	border: none;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-weight: 600;
+}
+
+/*#ptr {
+	position: relative;
+	max-width: 40px;
+	top: 245px;
+	left: 575px;
+	overflow-y: hidden;
+}*/
+
+.container.two .img-grid {
+	margin: 85px;
+}
+
+.container.two img {
+	margin: 7px;
+	width: 500px;
+	object-fit: cover;
+}
+
+.content2 p {
+	color: #606060;
+	font-size: 16px;
+	max-width: 580px;
+	position: relative;
+	top: -50px;
+	left: 350px;
+	line-height: 1.6em;
+}
+
+.content3 p {
+	margin-top: 400px;
+	font-family: Helvetica;
+	color: white;
+	font-size: 21px;
+	max-width: 650px;
+	position: relative;
+	text-align: center;
+	letter-spacing: 1px;
+	left: 280px;
+	line-height: 1.8em;
+}

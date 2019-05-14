@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = utf-8>
+	<title>Homework 4</title>
+	<style type = "text/css"> 
+		
+		body {
+			text-align: center;
+			margin-top: 135px;
+		}
+
+		p {
+			font-weight: bold;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class = "main">
+		<p>Enter URL for Highest-grossing films List JSON File</p>
+		<input name = "jsonfile" id = "jsonurl" type = "text" placeholder = "filmslist.json" maxlength = "255">
+		<script name = "Enter Button Functionality">
+			var btn13 = document.getElementById("jsonurl");
+			btn13.addEventListener("keyup", function(event) {
+			  event.preventDefault();
+			  if (event.keyCode === 13) {
+			  	document.getElementById("btn").click();
+			  }
+			});
+		</script>
+		<br><br>
+		<input name = "submit" id = "btn" type = "button" value = "Submit Query" OnClick = "viewJSON()">
+	</div>
+
+	<script name = "JSON Handler">
+		var html_text = "";
+
+		function viewJSON() {
+			try {
+				var url = document.getElementById("jsonurl").value;
+				
+				if (url.length == 0)
+					throw 'EmptyURLError'
+			} catch (Exception) {
+				window.alert("URL cannot be empty!");
+				return;
+			}
+
+			function loadJSON(url) {
+				if (window.XMLHttpRequest)
+					xmlhttp = new XMLHttpRequest();
+				else
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				xmlhttp.open("GET", url, false);
+				try {
+					xmlhttp.send();
+					if (xmlhttp.status == 404)
+						throw 'FileNotFound';
+				} catch (Exception) {
+					window.alert("File does not exist!");
+					return false;
+				} 
+				try {
+					var jsonObj = JSON.parse(xmlhttp.responseText);
+					if (jsonObj.Mainline.Table.Row == undefined)
+						throw 'RowDataError'
+				} catch (Exception) {
+					window.alert("Row data cannot be empty!");
+					return false;
+				}
+				return jsonObj;
+			}
+
+			var jsonObj = loadJSON(url);
+			if (!jsonObj)
+				return;
+
+			if (window.ActiveXObject) {
+				var hWin;
+				if (jsonObj.parseError.errorCode != 0) {
+					var myErr = jsonObj.parseError;
+					generateError(jsonObj);
+					hWin = window.open("", "Error", "height = 300, width = 340");
+					hWin.document.write(html_text);
+				} else {
+					hWin = window.open("", "Homework-4", "height = 800, width = 1100");
+					hWin.document.write(html_text);
+				}
+			} else {
+				jsonObj.onload = generateHTML(jsonObj);
+				hWin = window.open("", "Homework-4", "height = 800, width = 1100");
+				hWin.document.write(html_text);
+			}
+			hWin.document.close();
+		}
+
+
+		function generateHTML(jsonObj) {
+			row = jsonObj.Mainline.Table.Row;
+			html_text = "<html><head><meta charset = utf-8><title>Highest-grossing films</title></head><body>";
+			html_text += "<table border = '2'><tr>";
+			var filmsHeader = jsonObj.Mainline.Table.Header.Data;
+			var headerIterator = Object.keys(filmsHeader);
+			for (i = 0; i < headerIterator.length; i++)
+				html_text += "<th>" + filmsHeader[i] + "</th>";
+			html_text += "</tr>";
+
+			for (i = 0; i < row.length; i++) {
+				rowNodes = row[i];
+				html_text += "<tr>";
+				var rowKeys = Object.keys(rowNodes);
+				for (j = 0; j < rowKeys.length; j++) {
+					temp = rowKeys[j];
+					if (rowKeys[j] == "Hubs") {
+						html_text += "<td><ul>";
+						for (k = 0; k < rowNodes[temp].Hub.length; k++) {
+							if (k == 0)
+								html_text += "<li><b>" + rowNodes[temp].Hub[k] + "</b></li>";
+							else 
+								html_text += "<li>" + rowNodes[temp].Hub[k] + "</li>";
+						}
+						html_text += "</ul>";
+					} else if (rowKeys[j] == "HomePage") {
+						if (rowNodes[temp])
+							html_text += "<td style = 'white-space: nowrap'><a href = '" + rowNodes[temp] + "''>"+ rowNodes[temp] + "</td>";
+					} else if (rowKeys[j] == "Logo") {
+						if (rowNodes[temp])
+							html_text += "<td><img src = '" + rowNodes[temp] + "' width = '110' height = '163'></td>";
+						else if (rowKeys[j].length == 0)
+							html_text += "<td></td>";
+					} else {
+						if (rowNodes[temp])
+							html_text += "<td>" + rowNodes[temp] + "</td>";
+						else
+							html_text += "<td> </td>";
+					}
+				}
+				html_text += "</tr>";	
+			}
+			html_text += "</table></center></body></html>";
+		}
+	</script>
+</body>
+</html>

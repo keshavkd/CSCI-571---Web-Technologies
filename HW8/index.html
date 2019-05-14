@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Product Search</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+	<!-- AJAX -->
+	<script src = "https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+
+	<script src = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-animate.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-messages.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.js"></script>
+	<script src = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-svg-round-progressbar/0.4.8/roundProgress.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+	<div class="mainBody" ng-app="prodFormApp" ng-controller="formController">
+		<div class="mainContainer bg-dark text-white">
+		  	<h2 class="text-center text-white" style="padding-top: 20px">Product Search</h2>
+		  	<form name="prodForm" id="prodForm" class="formContainer" ng-submit="submitForm(prodForm.$valid)" novalidate> 
+			    <div class="form-group form-inline row">
+			        <label class="col-sm-3" style="justify-content: left">
+			          Keyword<span style="color: red">*</span>
+			        </label>
+			        <div class="col-sm-1"></div>
+			        <input type="text" id="keyword" name="ngKeyword" ng-model="ngKeyword" placeholder="Enter Product Name (eg. iPhone 8)" class="form-control col-sm-6" required ng-pattern="/^[ ]*[a-z0-9][a-z0-9 ]*$/i">
+			        <div class="col-sm-4"></div>
+			        <div class="text-danger pb-0 mb-0" ng-show="prodForm.ngKeyword.$touched && prodForm.ngKeyword.$invalid" ng-cloak>
+			        Please enter a valid keyword.</div>
+		      	</div>
+		      	<div class="form-group form-inline row">
+			        <label class="col-sm-3" style="justify-content: left">
+			          Category 
+			        </label>
+			        <div class="col-sm-1"></div>
+			        <select id="category" class="custom-select col-sm-3">
+			          <option value = "0">All Categories</option>
+			          <option value = "1" disabled>---------------------------------------</option>
+			          <option value = "550">Art</option>
+			          <option value = "2984">Baby</option>
+			          <option value = "267">Books</option>
+			          <option value = "11450">Clothing, Shoes & Accessories</option>
+			          <option value = "58058">Computers/Tablets & Networking</option>
+			          <option value = "26395">Health & Beauty</option>
+			          <option value = "11233">Music</option>
+			          <option value = "1249">Video Games & Consoles</option>
+			        </select>
+		      	</div>
+		      	<div class = "form-group form-inline row">
+			        <label class="col-sm-3 text-left" style="justify-content: left">
+			          Condition
+			        </label>
+			        <div class="col-sm-1"></div>
+			        <div class="condition-class" style="display: inline-block">
+			          <div class="custom-control custom-checkbox custom-control-inline">
+			            <input type="checkbox" value="new" class="custom-control-input" id="condition_n">
+			            <label class="custom-control-label" for="condition_n">New</label>
+			          </div>
+			          <div class="custom-control custom-checkbox custom-control-inline">
+			            <input type="checkbox" value="used" class="custom-control-input" id="condition_u">
+			            <label class="custom-control-label" for="condition_u">Used</label>
+			          </div>
+			          <div class="custom-control custom-checkbox custom-control-inline">
+			            <input type="checkbox" value = "uns" class="custom-control-input" id="condition_x">
+			            <label class="custom-control-label" for="condition_x">Unspecified</label>
+			          </div>
+			        </div>
+		      	</div>
+		      
+		      	<div class = "form-group form-inline row">
+			        <label class="col-sm-3" style="justify-content: left">
+			          Shipping Options
+			        </label>
+			        <div class="col-sm-1"></div>
+			        <div class="shiping-class">
+			          <div class="custom-control custom-checkbox custom-control-inline">
+			            <input type="checkbox" value="loc-p" class="custom-control-input" id="shipping_l">
+			            <label class="custom-control-label" for="shipping_l">Local Pickup</label>
+			          </div>
+			          <div class="custom-control custom-checkbox custom-control-inline">
+			            <input type="checkbox" value="free-s" class="custom-control-input" id="shipping_f">
+			            <label class="custom-control-label" for="shipping_f">Free Shipping</label>
+			          </div>
+			        </div>
+		      	</div>
+
+		      	<div class="form-group form-inline row">
+			        <label class="col-sm-3" style="justify-content: left">
+			          Distance (Miles)
+			        </label>
+			        <div class="col-sm-1"></div>
+			        <input type="number" min="0" id="distance" placeholder="10" class="form-control col-sm-3">
+		      	</div>
+
+		      	<div class="form-group row">
+			        <label class="col-sm-3" style="justify-content: left">
+			          From<span style="color: red">*</span>
+			        </label>
+			        <div class="col-sm-1"></div>
+			        <div class="col-sm-5" style="padding: 0px">
+			          <div class="custom-control custom-radio">
+			            <input type="radio" ng-model="ngLocation" value="cur-loc" class="custom-control-input" id="cur-loc" name="ngLocation" ng-init="ngLocation='cur-loc'" ng-click="setLocationValidity()">
+			            <label class="custom-control-label" for="cur-loc">Current Location</label>
+			          </div>
+			          <div class="custom-control custom-radio">
+			            <input type="radio" ng-model="ngLocation" value="cus-loc" class="custom-control-input" id="cus-loc" name="ngLocation" ng-click="setRequiredValidity()">
+			            <label class="custom-control-label" for="cus-loc">Other. Please specify zip code:</label>
+			          </div>
+			        </div>
+		      	</div>
+		      	<div class="form-group form-inline row">
+		        	<div class="col-sm-4"></div>
+		        	<div class="col-sm-6" style="padding: 0px;">
+			        	<input type="text" id="ngZipcode" ng-model="ngZipcode" ng-keyUp="zipAuto(prodForm.ngZipcode.$viewValue)" name="ngZipcode" style="width: 100%" class="form-control" ng-disabled="!checkBtn(ngLocation)" ng-required="checkBtn(ngLocation)"
+			        	ng-pattern="/\b\d{5}\b/g" ng-focus="show=true" ng-blur="show=false">
+			        	<ul id="ziplist" class="list-group" style="padding-right: 0px; position: absolute; width: 100%; z-index: 10" ng-cloak ng-show="checkBtn(ngLocation) && show">  
+			            	<li class="list-group-item text-dark" id="zipli" ng-repeat="zipData in aZipcode" ng-mousedown="fillZip(zipData)" style="cursor: pointer;">
+			            	<a>{{ zipData }}</a></li>  
+			      		</ul>
+
+			        	<div class="col-sm-4"></div>
+			        	<div class="text-danger pb-0 mb-0" id="invMsgZip" name="invMsgZip" ng-model="invMsgZip" ng-show="prodForm.ngZipcode.$touched && prodForm.ngZipcode.$invalid && checkBtn(ngLocation)" ng-cloak>
+				        Please enter a zip code.</div>
+
+				        <!-- {{ prodForm.ngZipcode }} -->
+			    	</div>
+		      	</div>
+
+		      	<div class="form-group form-inline row">
+			        <button type="button" onclick="searchBtn();" ng-disabled="prodForm.$invalid" class="btn btn-light btn-search btn-sm" style="margin: 10px" id="search"><i class="material-icons" style="vertical-align: middle;">search</i> Search</button>
+			        <button type="button" ng-click="resetBtnA();" onclick="resetBtn();" class="btn btn-light btn-sm" style="margin: 10px" id="clear"><i class="material-icons" style="vertical-align: middle;">clear_all</i> Clear</button>
+		      	</div>
+
+	    	</form>
+		</div>
+	  	<div class="btn-class-group" style="text-align: center">
+	    	<button type="button" id="resTab" name="resTab" class="btn btn-dark" onclick="resultsPage();" style="margin: 10px">Results</button>
+	    	<button type="button" id="wishTab" name="wishTab" class="btn btn-light" onclick="wishPage();" style="margin: 10px">Wish List</button>
+	  	</div>
+
+	  	<div class="progress" id="prx" style="margin: 30px auto; width: 75%" hidden>
+		  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+		</div>
+
+	  	<div class="alert alert-warning" id="norecords" role="alert" style="margin: 10px auto 0px; width: 75%" hidden>
+  			No Records.
+		</div>
+
+	  	<div class="btn-class" id="details_class" style="text-align: right; width: 90%" hidden>
+	  		<button type="button" class="btn btn-light btn-sm" id="details" onclick="prodDetails();" disabled style="margin-top: 10px;">Details<i class="material-icons" style="vertical-align: middle;">keyboard_arrow_right</i></button>
+	  	</div>
+
+	  	<div class="alert alert-warning" id="norecords_w" role="alert" style="margin: 10px auto; width: 75%" hidden>
+  			No Records.
+		</div>
+
+		<div class="table-responsive-sm" id="d3" style="margin: 10px auto; width: 75%" hidden>
+		  	<table class="table table-hover table-striped table-dark" id="t3">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Image</th>
+						<th scope="col">Title</th>
+						<th scope="col">Price</th>
+						<th scope="col">Shipping</th>
+						<th scope="col">Seller</th>
+						<th scope="col">Wish List</th>
+					</tr>
+				</thead>
+				<tbody id="tb3">
+					<!-- Enter Results Here -->
+				</tbody>
+			</table>
+		</div>
+
+	  	<div class="table-responsive-sm" id="d1" style="margin: 10px auto; width: 75%" hidden>
+		  	<table class="table table-hover table-striped table-dark" id="t1">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Image</th>
+						<th scope="col">Title</th>
+						<th scope="col">Price</th>
+						<th scope="col">Shipping</th>
+						<th scope="col">Zip</th>
+						<th scope="col">Seller</th>
+						<th scope="col">Wish List</th>
+					</tr>
+				</thead>
+				<tbody id="tb1">
+					<!-- Enter Results Here -->
+				</tbody>
+			</table>
+		</div>
+
+		<nav aria-label="Pagination Results" id="pageResults" hidden>
+			<ul class="pagination justify-content-center" id="ultable">
+		    	
+		  	</ul>
+		</nav>
+
+		<div id="prodTitle" style="margin: 20px auto; text-align: center" hidden></div>
+
+		<div class="btn-class" id="list_class" onclick="backList()" style="margin: 10px auto; width: 75%" hidden>
+	  		<button type="button" style="float:left" class="btn btn-light btn-sm" id="list"><i class="material-icons" style="vertical-align: middle;">keyboard_arrow_left</i>List</button>
+	  	</div>
+
+		<div class="btn-class-group" id="fbwish" style="margin:15px auto; margin-bottom: 5px; width:75%;" hidden>
+			<button type="button" id="cartBtn" class="btn btn-light" style="float: right; border: none; box-shadow: none"><i id="carti" class="material-icons" style="vertical-align: middle">add_shopping_cart</i></button>
+			<button type="button" style="float: right; border: none; box-shadow: none"><a target='_blank' id="fbbtn"><img src="http://csci571.com/hw/hw8/Images/facebook.png" style="height: 38px"></a></button>
+		</div>
+		
+		<br><br>
+		<div class="btn-class-group" id="navbtn" style="margin: 0px auto; margin-bottom: 0px; width:75%; text-align: right;" hidden>
+			<button type="button" id="prodb" onclick="prodGen()" class="btn btn-light navB active">Product</button>
+			<button type="button" id="photob" onclick="photoGen()" class="btn btn-light navB">Photos</button>
+			<button type="button" id="shipb" onclick="shipGen()" class="btn btn-light navB">Shipping</button>
+			<button type="button" id="sellb" onclick="sellGen()" class="btn btn-light navB">Seller</button>
+			<button type="button" id="simb" onclick="simGen()" class="btn btn-light navB">Similar Products</button>
+		</div>
+		<div class="table-responsive-sm" id="d2" style="margin: 0px auto; width: 75%" hidden>
+		  	<table class="table table-hover table-striped table-dark" id="t2">
+				
+			</table>
+		</div>
+
+		<div class="singleContent" id="sTab" style="margin: 0px auto; width: 75%" hidden>
+			<table class="table table-hover table-striped table-dark" id="tabx">
+				
+			</table>
+		</div>
+
+		<div class="googleContent" id="gTab" style="margin: 0px auto; width: 75%" hidden>
+
+		</div>
+
+		<div class="similarContent" id="siTab" style="margin: 0px auto; width: 75%" hidden>
+			<div class="alert alert-warning" id="norecords_s" role="alert">
+  				No Records.
+			</div>
+			<div id="simContent">
+				<select id="dType" style="margin-right: 10px; margin-bottom: 10px;" class="custom-select custom-select-sm col-sm-2" onchange="changeType()">
+			        <option value = "0">Default</option>
+			        <option value = "1">Product Name</option>
+			        <option value = "2">Days Left</option>
+			        <option value = "3">Price</option>
+			        <option value = "4">Shipping Cost</option>
+		        </select>
+		        <select id="dOrder" style="margin-bottom: 10px;" class="custom-select custom-select-sm col-sm-2" onchange="changeOrder()" disabled>
+			        <option value = "0">Ascending</option>
+			        <option value = "1">Descending</option>
+		        </select>
+		        <table class="table table-responsive-sm table-dark" id="simtab1">
+					
+				</table>
+				<table class="table table-responsive-sm table-dark" id="simtab2" hidden>
+
+				</table>
+				<div class="btn-class-group" style="text-align: center">
+		    		<button type="button" style="margin-bottom: 10px" id="showTab" name="showTab" class="btn btn-sm btn-dark" onclick="showTab();">Show More</button>
+		    	</div>
+	    	</div>
+		</div>
+			
+		<div class="modal fade" id="prodImages">
+		    <div class="modal-dialog modal-dialog-centered">
+			    <div class="modal-content">
+				    <div class="modal-header">
+					    <h4 class="modal-title">Product Images</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				    </div>
+			        <div class="modal-body" id="modalBody">
+			        	<i class="material-icons imgNav" id="preva" style="float:left; vertical-align: middle" onclick="prevImg()"><b>navigate_before</b></i>
+			        	<a id="idimg" href="" target="_blank"><img id="acimg" src="https://www.w3schools.com/w3css/img_lights.jpg" style="border: 8px solid black; padding: 4px; width: 100%; vertical-align: middle; align-content: center;"></a>
+			        	<i class="material-icons imgNav" id ="nexta" style="right:16px; vertical-align: middle" onclick="nextImg()"><b>navigate_next</b></i>
+				    </div>
+			        <div class="modal-footer">
+		            	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        </div>
+  		        </div>
+		    </div>
+		</div>
+
+	</div>
+
+	<script>
+
+		$('body').tooltip({
+		    selector: '.snap'
+		});
+
+		var mainKey = -1;
+		var fbId = {
+			id: '641157699674175',
+			key: 'c9bda16a203b7fc09202e5e8d5a1dcf3'
+		};
+
+		var fburl1 = 'https://www.facebook.com/dialog/share?app_id=' + fbId.id + '&display=popup&href=';
+		var fburl2 = '&redirect_uri=';
+
+		function getLocation() {
+			if (window.XMLHttpRequest)
+				xmlhttp = new XMLHttpRequest();
+			else
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			xmlhttp.open("POST", "http://ip-api.com/json", false);
+			xmlhttp.send();
+			window.jsonIp = JSON.parse(xmlhttp.responseText);
+			if (window.jsonIp['status'] == "fail") {
+				console.log("YO");
+				return;
+			}
+			window.locZip = jsonIp['zip'];
+			// localStorage.clear();
+		}
+
+		window.onload = getLocation;
+
+		window.wKeyword = "";
+		window.wCategory = "";
+		window.wDistance = "10";
+
+		window.wC1 = false;
+		window.wC2 = false;
+		window.wC3 = false;
+		window.wC4 = false;
+		window.wC5 = false;
+		window.wR1 = true;
+		window.wR2 = false;
+
+		window.wZipcode = "";
+
+		window.jsonObj = -1;
+		window.singleJSON = -1;
+		window.selItem = -1;
+
+		window.dKey = '';
+		window.googleObj = -1;
+
+		var godObject = [];
+
+		function resetBtn() {
+			document.getElementById("prodForm").reset();
+			document.getElementById("cus-loc").checked = false;
+			document.getElementById("cur-loc").checked = true;
+			document.getElementById("norecords").hidden = true;
+			document.getElementById("norecords_w").hidden = true;
+			document.getElementById("pageResults").hidden = true;
+			document.getElementById("details_class").hidden = true;
+			document.getElementById("list_class").hidden = true;
+			document.getElementById("d1").hidden = true;
+			document.getElementById("resTab").click();
+			document.getElementById("d2").hidden = true;
+			document.getElementById("navbtn").hidden = true;
+			document.getElementById("fbwish").hidden = true;
+			document.getElementById("prodTitle").hidden = true;
+			document.getElementById("d3").hidden = true;
+			document.getElementById("tb1").innerHTML = '';
+			document.getElementById("ultable").innerHTML = '';
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("gTab").hidden = true;
+			document.getElementById("siTab").hidden = true;
+			mainKey = 0;
+		}
+
+		function searchBtn() {
+			mainKey = 1;
+			document.getElementById("details_class").disabled = true;
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("siTab").hidden = true;
+			window.wKeyword = document.getElementById("keyword").value;
+			window.wCategory = document.getElementById("category").value;
+			window.wC1 = document.getElementById("condition_n").checked;
+			window.wC2 = document.getElementById("condition_u").checked;
+			window.wC3 = document.getElementById("condition_x").checked;
+			window.wC4 = document.getElementById("shipping_l").checked;
+			window.wC5 = document.getElementById("shipping_f").checked;
+			if (document.getElementById("cus-loc").checked) {
+				window.wR1 = false;
+				window.wR2 = true;
+				window.wZipcode = document.getElementById("ngZipcode").value;
+			}
+			var sQuery = encodeURIComponent(window.wKeyword);
+			sQuery = sQuery.replace(/%20/g, "+");
+
+			document.getElementById("prx").hidden = false;
+
+			var sub = "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=";
+			var subQuery = "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&paginationInput.entriesPerPage=50&keywords=" + sQuery + "&";
+			if (window.wCategory != 0)
+				subQuery += "categoryId=" + window.wCategory + "&";
+			if (window.wR1)
+				subQuery += "buyerPostalCode=" + window.locZip + "&";
+			else
+				subQuery += "buyerPostalCode=" + window.wZipcode + "&";
+			var i = 1;
+			var j = 0;
+			subQuery += "itemFilter(0).name=MaxDistance&itemFilter(0).value=" + window.wDistance + "&";
+			if (window.wC1 || window.wC2 || window.wC3) {
+				subQuery += "itemFilter(" + i + ").name=Condition&";
+				if (window.wC1) {
+					subQuery += "itemFilter(" + i + ").value(" + j + ")=New&";
+					j = j + 1;
+				}
+				if (window.wC2) {
+					subQuery += "itemFilter(" + i + ").value(" + j + ")=Used&";
+					j = j + 1; 
+				}
+				if (window.wC3) {
+					subQuery += "itemFilter(" + i + ").value(" + j + ")=Unspecified&";
+					j = j + 1; 
+				}
+				i = i + 1;
+			}
+			if (window.wC4) {
+				subQuery += "itemFilter(" + i + ").name=FreeShippingOnly&itemFilter(" + i + ").value=true&";
+				i = i + 1;
+			}
+			if (window.wC5) {
+				subQuery += "itemFilter(" + i + ").name=LocalPickupOnly&itemFilter(" + i + ").value=true&";
+				i = i + 1;
+			}
+			subQuery += "itemFilter(" + i + ").name=HideDuplicateItems&itemFilter(" + i + ").value=true&";
+			subQuery += "outputSelector(0)=SellerInfo&outputSelector(1)=StoreInfo"; 
+			console.log(sub + subQuery);
+			
+			$.ajax({
+				url: '/ebaySearchForm',
+				type: 'GET',
+				data: {
+					init : sub,
+					end : subQuery
+				},
+
+				success: function(data) {
+					window.jsonObj = data;
+					console.log(data);
+					document.getElementById("prx").hidden = true;
+					initTable(data);
+					document.getElementById("resTab").click();
+				}
+			})
+		}
+
+		function initTable(jsonObj) {
+			var nPages = 1;
+			var nRem = 1;
+			if (jsonObj.findItemsAdvancedResponse[0].ack[0] != 'Success') {
+				document.getElementById("norecords").hidden = false;
+				document.getElementById("d1").hidden = true;
+				document.getElementById("pageResults").hidden = true;
+				document.getElementById("details_class").hidden = true;
+				document.getElementById("tb1").innerHTML = '';
+				document.getElementById("ultable").innerHTML = '';
+				mainKey = 2;
+			} else if (jsonObj.findItemsAdvancedResponse[0].searchResult[0]['@count'] == 0) {
+				document.getElementById("norecords").hidden = false;
+				document.getElementById("d1").hidden = true;
+				document.getElementById("pageResults").hidden = true;
+				document.getElementById("details_class").hidden = true;
+				document.getElementById("tb1").innerHTML = '';
+				document.getElementById("ultable").innerHTML = '';
+				mainKey = 2;
+			} else {
+				resultObj = jsonObj.findItemsAdvancedResponse[0].searchResult[0];
+				document.getElementById("norecords").hidden = true;
+				nPages = Math.ceil(resultObj['@count'] / 10);
+				nRem = resultObj['@count'] % 10;
+				console.log("Count:" + resultObj['@count'] + " Pages:" + nPages + " LastPage:" + nRem);
+				initPages(jsonObj, nPages, nRem);
+				displayTable(1, nPages, nRem);
+				document.getElementById("details_class").hidden = false;
+			}
+		}
+
+		function initPages(jsonObj, npage, nrem) {
+			var stbody = '<li class="page-item" id="liprev"><a class="page-link" onclick="pnChange(0, ' + npage + ', ' + nrem + ')">&laquo; Previous</a></li>';
+			for (i = 1; i <= npage; i++) {
+				if (i == 1)
+					stbody += '<li class="page-item active" id="ili' + i + '"><a class="page-link" onclick="pageChange(' + i + ', ' + npage + ', ' + nrem + ')">' + i + '</a></li>';
+				else
+					stbody += '<li class="page-item" id="ili' + i + '"><a class="page-link" onclick="pageChange(' + i + ', ' + npage + ', ' + nrem + ')">' + i + '</a></li>';
+			}
+		    stbody += '<li class="page-item" id="linext"><a class="page-link" onclick="pnChange(1, ' + npage + ', ' + nrem + ')">Next &raquo;</a></li>';
+		    
+		    document.getElementById("ultable").innerHTML = stbody;
+		    document.getElementById("pageResults").hidden = false;
+		    disablePage(npage);
+		}
+
+		var ttdstring = '';
+
+		function pageChange(x, n, rem) {
+			for (i = 1; i <= n; i++)
+				document.getElementById("ili" + i).classList.remove("active");
+			document.getElementById("ili" + x).classList.add("active");
+			disablePage(n);
+			displayTable(x, n, rem);
+			document.getElementById("details").disabled = true;
+			console.log(ttdstring);
+		}
+
+		function pnChange(i, npage, rem) {
+			if (i == 0) {
+				for (j = 2; j <= npage; j++) {
+					if (document.getElementById("ili" + j).classList.contains("active")) {
+						document.getElementById("ili" + j).classList.remove("active");
+						document.getElementById("ili" + (j - 1)).classList.add("active");
+						displayTable(j - 1, npage, rem);
+						disablePage(npage);
+						break;
+					}
+				}
+			} else {
+				for (j = 1; j < npage; j++) {
+					if (document.getElementById("ili" + j).classList.contains("active")) {
+						document.getElementById("ili" + j).classList.remove("active");
+						document.getElementById("ili" + (j + 1)).classList.add("active");
+						displayTable(j + 1, npage, rem);
+						disablePage(npage);
+						break;
+					}
+				}
+			}
+			document.getElementById("details").disabled = true;
+			console.log(ttdstring);
+			disablePage(npage);
+		}
+
+		function disablePage(npage) {
+			if (document.getElementById("ili1").classList.contains("active"))
+		    	document.getElementById("liprev").classList.add("disabled");
+		    else
+		    	document.getElementById("liprev").classList.remove("disabled");
+		    if (document.getElementById("ili" + npage).classList.contains("active")) 
+		    	document.getElementById("linext").classList.add("disabled");
+		    else
+		    	document.getElementById("linext").classList.remove("disabled");
+		}
+
+		function displayTable(x, npage, rem) {
+			ttdstring = '';
+			var y = (x - 1) * 10;
+			var ttd = -1;
+			if (rem == 0) {
+				for (i = 0; i < 10; i++) {
+					ttd = window.jsonObj.findItemsAdvancedResponse[0].searchResult[0].item[y + i];
+					getItemSpecifics(ttd, y + i);
+				}
+			} else {
+				if (x == npage) {
+					for (i = 0; i < rem; i++) {
+						ttd = window.jsonObj.findItemsAdvancedResponse[0].searchResult[0].item[y + i];
+						getItemSpecifics(ttd, y + i);
+					}
+				} else {
+					for (i = 0; i < 10; i++) {
+						ttd = window.jsonObj.findItemsAdvancedResponse[0].searchResult[0].item[y + i];
+						getItemSpecifics(ttd, y + i);
+					}
+				}
+			}
+			document.getElementById("tb1").innerHTML = ttdstring;
+			document.getElementById("d1").hidden = false;
+		}
+
+		function getItemSpecifics(ttd, y) {
+			var obj = {
+				'index' : y,
+				'id' : ttd.itemId[0]
+			}
+			godObject.push(obj);
+			// console.log(godObject);
+			var wG = '';
+			var wT = '';
+			var wTT = '';
+			var wP = '';
+			var wZ = '';
+			var wS = '';
+			var wI = '';
+			ttdstring += '<tr id="tr' + ttd.itemId[0] + '">';
+			ttdstring += '<td>' + (y + 1) + '</td>';
+			
+			try {
+				ttdstring += '<td><a href="' + ttd.galleryURL[0] + '" target="_blank"><img src="' + ttd.galleryURL[0] + '" style="height: 75px; width: 75px;"></a></td>';
+				wG = ttd.galleryURL[0];
+			} catch (Exception) {
+				ttdstring += '<td>N/A</td>';
+				wG = 'N/A';
+			}
+
+			try {
+				if (ttd.title[0].length > 35) {
+					var subtitle = ttd.title[0].substring(0, 35);
+					j = 35;
+					while (j > 0) {
+						if (subtitle.charAt(j) == ' ') {
+							subtitle = subtitle.substring(0, j);
+							wT = subtitle;
+							break;
+						}
+						j--;
+					}
+					subtitle += '...';
+					wT += '...';
+					wT = wT.replace(/'/g, '&quot;');
+					wT = wT.replace(/"/g, '&quot;');
+				} else {
+					var subtitle = ttd.title[0];
+					wT = subtitle;
+					wT = wT.replace(/'/g, '&quot;');
+					wT = wT.replace(/"/g, '&quot;');
+				}
+				wTT = ttd.title[0];
+
+				ttdstring += '<td style="color: #007bff;" onclick="singleItemJSON(' + ttd.itemId[0] + ')"><span class="snap" data-toggle="tooltip" data-placement="bottom" title=\"' + wTT + '\" style="cursor: pointer; text-decoration: underline; white-space: nowrap;">' + subtitle + '</span></a></td>'
+
+				wTT = wTT.replace(/'/g, '&quot;');
+				wTT = wTT.replace(/"/g, '&quot;');
+				
+			} catch (Exception) {
+				ttdstring += '<td>N/A</td>';
+				wT = 'N/A';
+				wTT = 'N/A';
+			}
+
+			try {
+				ttdstring += '<td>$' + ttd.sellingStatus[0].currentPrice[0].__value__ + '</td>';
+				wP = '$' + ttd.sellingStatus[0].currentPrice[0].__value__;
+			} catch (Exception) {
+				ttdstring += '<td>N/A</td>';
+				wP = 'N/A';
+			}
+
+			try {
+				if (ttd.shippingInfo[0].shippingServiceCost[0].__value__ == '0.0') {
+					ttdstring += '<td>Free Shipping</td>';
+					wS = 'Free Shipping';
+				} else {
+					ttdstring += '<td>$' + ttd.shippingInfo[0].shippingServiceCost[0].__value__ + '</td>';
+					wS = '$' + ttd.shippingInfo[0].shippingServiceCost[0].__value__;
+				}
+			} catch (Exception) {
+				ttdstring += '<td>N/A</td>';
+				wS = 'N/A';
+			}
+
+			try {
+				ttdstring += '<td>' + ttd.postalCode[0] + '</td>';
+				wZ = ttd.postalCode[0];
+			} catch (Exception) {
+				ttdstring += '<td>N/A</td>';
+				wZ = 'N/A';
+			}
+
+			try {
+				ttdstring += '<td>' + ttd.sellerInfo[0].sellerUserName[0].toUpperCase() + '</td>';
+				wI = ttd.sellerInfo[0].sellerUserName[0].toUpperCase();
+			} catch (Exception) {
+				ttdstring += '<td>N/A</td>';
+				wI = 'N/A';
+			}
+
+			// console.log(wG + " " + wT + " " + wTT + " " + wP + " " + wS + " " + wZ + " " + wI + " " + ttd.itemId[0]);
+
+			if (localStorage.getItem(ttd.itemId[0])) {
+				ttdstring += '<td><button type="button" id="bt' + ttd.itemId[0] + '" class="btn btn-light" onclick="toggleWish(\'' + wG + '\',\'' + wT + '\',\'' + wTT + '\',\'' + wP + '\',\'' + wS + '\',\'' + wZ + '\',\'' + wI + '\',' + ttd.itemId[0] +')"><i id="iid' + ttd.itemId[0] + '" class="material-icons" style="vertical-align: middle; color: orange">remove_shopping_cart</i>';
+			} else {
+				ttdstring += '<td><button type="button" id="bt' + ttd.itemId[0] + '" class="btn btn-light" onclick="toggleWish(\'' + wG + '\',\'' + wT + '\',\'' + wTT + '\',\'' + wP + '\',\'' + wS + '\',\'' + wZ + '\',\'' + wI + '\',' + ttd.itemId[0] +')"><i id="iid' + ttd.itemId[0] + '" class="material-icons" style="vertical-align: middle">add_shopping_cart</i>';
+			}
+
+			ttdstring += '</tr>';
+
+
+		}
+
+		function togleWish(id) {
+			try {
+				if (window.singleJSON.Item.ItemID == id)
+					document.getElementById("details").disabled = true;
+			} catch (Exception) {
+
+			}
+			localStorage.removeItem(id);
+			genWish();
+			try {
+				document.getElementById("iid" + id).innerHTML = "add_shopping_cart";
+				document.getElementById("iid" + id).style.color = "black";
+			} catch (Exception) {
+
+			}
+		}
+
+		function toggleWish(e1, e2, e3, e4, e5, e6, e7, id) {
+			// console.log(e1 + e2 + e3 + e4 + e5 + e6 + e7);
+			if(document.getElementById("iid" + id).innerHTML == "remove_shopping_cart") {
+				document.getElementById("iid" + id).innerHTML = "add_shopping_cart";
+				document.getElementById("iid" + id).style.color = "black";
+				localStorage.removeItem(id);
+			} else {
+				document.getElementById("iid" + id).innerHTML = "remove_shopping_cart";
+				document.getElementById("iid" + id).style.color = "orange";
+				var tx = {
+					'q' : e1,
+					'w' : e2,
+					'e' : e3,
+					'r' : e4,
+					't' : e5,
+					'y' : e6,
+					'u' : e7
+				}
+				localStorage.setItem(id, JSON.stringify(tx));
+				console.log(localStorage.getItem(id));
+			}
+		}
+
+		function togInDetails(sobj) {
+			try {
+				console.log(sobj);
+				var jObj = JSON.parse(sobj);
+				var iObj = jsonObj.findItemsAdvancedResponse[0].searchResult[0].item[jObj.index];
+				// var iObj = window.jsonTrue.item[sobj.index];
+				if (localStorage.getItem(jObj.id) != null) {
+					document.getElementById("carti").innerHTML = "add_shopping_cart";
+					document.getElementById("carti").style.color = "black";
+					localStorage.removeItem(jObj.id);
+					document.getElementById("iid" + jObj.id).innerHTML = "add_shopping_cart";
+					document.getElementById("iid" + jObj.id).style.color = "black";
+					genWish();
+					if (!document.getElementById("norecords_w").hidden) {
+						document.getElementById("norecords_w").hidden = true;
+					}
+					document.getElementById("d3").hidden = true;
+					document.getElementById("details_class").hidden = true;
+				} else {
+					document.getElementById("carti").innerHTML = "remove_shopping_cart";
+					document.getElementById("carti").style.color = "orange";
+					
+					try {
+						e1 = iObj.galleryURL[0];
+					} catch(Exception) {
+						e1 = 'N/A';
+					}
+					
+					try {
+						e2 = iObj.title[0].substring(0, 35).replace(/'/g, '&quot;');
+						if (iObj.title[0] > 35)
+							e2 += '...';
+					} catch(Exception) {
+						e2 = 'N/A';
+					}
+
+					try {
+						e3 = iObj.title[0].replace(/'/g, '&quot;');
+					} catch(Exception) {
+						e3 = 'N/A';
+					}
+
+					try {
+						e4 = '$'+ iObj.sellingStatus[0].currentPrice[0].__value__ ;
+					} catch(Exception) {
+						e4 = 'N/A';
+					}
+
+					try {
+						if (iObj.shippingInfo[0].shippingServiceCost[0].__value__ == '0.0') {
+							e5 = 'Free Shipping';
+						} else {
+							e5 = '$' + iObj.shippingInfo[0].shippingServiceCost[0].__value__ ;
+						}
+					} catch(Exception) {
+						e5 = 'N/A';
+					}
+
+					try {
+						e6 = iObj.postalCode[0];
+					} catch(Exception) {
+						e6 = 'N/A';
+					}
+
+					try {
+						e7 = ttd.sellerInfo[0].sellerUserName[0];
+					} catch(Exception) {
+						e7 = 'N/A';
+					}
+
+					console.log(e1 + " " + e2 + " " + e3 + " " + e4 + " " + e5 + " " + e6 + " " + e7);
+					toggleWish(e1, e2, e3, e4, e5, e6, e7, jObj.id);
+					document.getElementById("iid" + jObj.id).innerHTML = "remove_shopping_cart";
+					document.getElementById("iid" + jObj.id).style.color = "orange";
+				}
+				console.log(iObj);
+			} catch (Exception) {
+
+			}
+			
+		}
+
+		function resultsPage() {
+
+			var wt = document.getElementById("wishTab");
+			var rt = document.getElementById("resTab");
+			rt.classList.remove("btn-light");
+			rt.classList.add("btn-dark");
+			wt.classList.remove("btn-dark");
+			wt.classList.add("btn-light");
+			// if (window.jsonObj.findItemsAdvancedResponse[0].searchResult[0]['@count'] == 0 || jsonObj.findItemsAdvancedResponse[0].ack[0] != 'Success') {
+			// 	document.getElementById("norecords").hidden = false;
+			// 	document.getElementById("d3").hidden = true;
+			// 	document.getElementById("norecords_w").hidden = true;
+			// 	document.getElementById("d1").hidden = true;
+			// 	document.getElementById("pageResults").hidden = true;
+			// 	document.getElementById("details_class").hidden = true;
+			// 	return;
+			// }
+			document.getElementById("d2").hidden = true;
+			document.getElementById("prodTitle").hidden = true;
+			document.getElementById("list_class").hidden = true;
+			document.getElementById("navbtn").hidden = true;
+			document.getElementById('fbwish').hidden = true;
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("gTab").hidden = true;
+			document.getElementById("details").disabled = true;
+			for (k = 0; k < document.getElementById("t1").rows.length; k++) {
+				document.getElementById("t1").rows[k].style.backgroundColor = "transparent";
+			}
+
+			if (mainKey == -1 || mainKey == 0) {
+				console.log("INIT || CLEAR");
+				document.getElementById("d1").hidden = true;
+				document.getElementById("pageResults").hidden = true;
+				document.getElementById("details_class").hidden = true;
+				document.getElementById("norecords").hidden = true;
+			} else if (mainKey == 2) {
+				console.log("NO RECORDS");
+				document.getElementById("d1").hidden = true;
+				document.getElementById("pageResults").hidden = true;
+				document.getElementById("details_class").hidden = true;
+				document.getElementById("norecords").hidden = false;
+			} else {
+				console.log("RESULTS");
+				document.getElementById("d1").hidden = false;
+				document.getElementById("pageResults").hidden = false;
+				document.getElementById("details_class").hidden = false;
+			}
+			document.getElementById("d3").hidden = true;
+			document.getElementById("norecords_w").hidden = true;
+		}
+
+		var sinData = '';
+
+		function singleItemJSON(id) {
+			window.dKey = id;
+			var s1 = 'http://open.api.ebay.com/shopping?callname=GetSingleItem&responseencoding=JSON&appid=';
+			var s2 = '&siteid=0&version=967&ItemID=' + id + '&IncludeSelector=Description,Details,ItemSpecifics';
+
+			$.ajax({
+				url: '/singleItemJSON',
+				type: 'POST',
+				data: {
+					sin1 : s1,
+					sin2 : s2
+				},
+
+				success: function(data) {
+					window.singleJSON = data;
+					console.log(data);
+					document.getElementById("prx").hidden = false;
+
+					setTimeout(singleItemHelp, 300);
+					// singleItemHelp();
+				}
+			})
+		}
+
+		function singleItemHelp() {
+			var SIObjItem = window.singleJSON.Item;
+			sinData = '';
+			if (SIObjItem.Title) {
+				document.getElementById("prodTitle").innerHTML = '<b>' + SIObjItem.Title + '</b>';
+				document.getElementById("prodTitle").hidden = false;
+			}
+			if (SIObjItem.PictureURL.length != 0) {
+				sinData += '<tr><th align = "left">Product Images</th><td align = "left">'
+				sinData += '<a style="color: #00bfff; cursor: pointer; text-decoration: underline;" data-toggle="modal" data-target="#prodImages">View Product images Here</a></td></tr>';
+			}
+			if (SIObjItem.SubTitle) {
+				sinData += '<tr><th align = "left">SubTitle</th><td align = "left">';
+				sinData += SIObjItem.SubTitle + '</td></tr>';
+			}
+			if (SIObjItem.CurrentPrice) {
+				sinData += '<tr><th align = "left">Price</th><td align = "left">$';
+				sinData += SIObjItem.CurrentPrice.Value + '</td></tr>';
+			}
+			if (SIObjItem.Location) {
+				sinData += '<tr><th align = "left">Location</th><td align = "left">';
+				sinData += SIObjItem.Location;
+				if (SIObjItem.PostalCode)
+					sinData += ', ' + SIObjItem.PostalCode + '</td>';
+				else
+					sinData += '</td>';
+				sinData += '</tr>';
+			}			
+			if (SIObjItem.ReturnPolicy) {
+				sinData += '<tr><th align = "left">Return Policy (US)</th><td align = "left">';
+				if (SIObjItem.ReturnPolicy.ReturnsAccepted) {
+					sinData += SIObjItem.ReturnPolicy.ReturnsAccepted + " ";
+				}
+				if (SIObjItem.ReturnPolicy.ReturnsWithin) {
+					sinData += SIObjItem.ReturnPolicy.ReturnsWithin;
+				}
+				sinData += '</td></tr>';
+			}
+			if (SIObjItem.ItemSpecifics) {
+				var itemSpec = SIObjItem.ItemSpecifics.NameValueList;
+				for(i = 0; i < itemSpec.length; i++) {
+					sinData += '<tr><th align = "left">' + itemSpec[i].Name + '</th><td align = "left">' + itemSpec[i].Value[0] + '</td></tr>';
+				}
+			}
+
+			document.getElementById("d1").hidden = true;
+
+			document.getElementById("pageResults").hidden = true;
+			document.getElementById("details_class").hidden = true;
+			document.getElementById("list_class").hidden = false;
+			document.getElementById("t2").innerHTML = sinData;
+			
+			document.getElementById("prodb").click();
+			document.getElementById("prx").hidden = true;
+			document.getElementById("d2").hidden = false;
+			document.getElementById("navbtn").hidden = false;
+			document.getElementById("fbwish").hidden = false;
+			document.getElementById("d3").hidden = true;
+
+			if (localStorage.getItem(SIObjItem.ItemID) != null) {
+				document.getElementById("carti").innerHTML = "remove_shopping_cart";
+				document.getElementById("carti").style.color = "orange";
+			} else {
+				document.getElementById("carti").innerHTML = "add_shopping_cart";
+				document.getElementById("carti").style.color = "black";
+			}
+
+			var k = 0;
+			var str = '';
+			for (k = 0; k < Object.keys(godObject).length; k++) {
+				if (godObject[k].id == SIObjItem.ItemID) {
+					str = JSON.stringify(godObject[k]);
+					window.godId = SIObjItem.ItemID;
+					console.log(str);
+					document.getElementById("cartBtn").setAttribute('onclick', 'togInDetails(\'' + str + '\')');
+					break;
+				}
+			}
+			console.log(godObject);
+			if (k == 0 && str == '') {
+				console.log(SIObjItem.ItemID);
+				document.getElementById("cartBtn").setAttribute('onclick', 'toggleThat(' + SIObjItem.ItemID + ')');
+			}
+
+			window.godIndex = 0;
+			try {
+				console.log("TEST");
+				document.getElementById("acimg").src = SIObjItem.PictureURL[0];
+				document.getElementById("idimg").href = SIObjItem.PictureURL[0];
+				if (SIObjItem.PictureURL.length < 1) {
+					document.getElementById("preva").hidden = true;
+					document.getElementById("nexta").hidden = true;
+				} else {
+					document.getElementById("preva").hidden = false;
+					document.getElementById("nexta").hidden = false;
+				}
+				loadImg(SIObjItem.PictureURL[0]);
+
+			} catch(Exception) {
+				console.log("UNLUCKY");
+			}
+
+			var desc =  encodeURIComponent('Buy ' + SIObjItem.Title + ' at $' + SIObjItem.CurrentPrice.Value + ' from link below.');
+			document.getElementById("fbbtn").href = fburl1 + SIObjItem.ViewItemURLForNaturalSearch + fburl2 + '&quote=' + desc;
+		}
+
+		function loadImg(url) {
+			var img = new Image();
+			img.onload = function() {
+			  	var h = img.height * 450 / img.width;
+			  	console.log(img.height + " " + h);
+			  	document.getElementById("preva").style.top = h / 2 + "px";
+				document.getElementById("nexta").style.top = h / 2 + "px";
+			}
+			img.src = url; 
+		}
+
+		function prevImg() {
+			if (window.godIndex == 0 && window.singleJSON.Item.PictureURL.length != 1) {
+				document.getElementById("acimg").src = window.singleJSON.Item.PictureURL[window.singleJSON.Item.PictureURL.length - 1];
+				document.getElementById("idimg").href = window.singleJSON.Item.PictureURL[window.singleJSON.Item.PictureURL.length - 1];
+				window.godIndex = window.singleJSON.Item.PictureURL.length - 1;
+				loadImg(window.singleJSON.Item.PictureURL[window.singleJSON.Item.PictureURL.length - 1]);
+			} else if (window.godIndex == 0 && window.singleJSON.Item.PictureURL.length == 1) {
+				window.godIndex = 0;
+			} else {
+				document.getElementById("acimg").src = window.singleJSON.Item.PictureURL[window.godIndex - 1];
+				document.getElementById("idimg").href = window.singleJSON.Item.PictureURL[window.godIndex - 1];
+				window.godIndex -= 1;
+				loadImg(window.singleJSON.Item.PictureURL[window.godIndex - 1]);
+			}
+			var x = document.getElementById("acimg").scrollHeight;
+			console.log(x);
+			
+		}
+
+		function nextImg() {
+			if (window.godIndex == window.singleJSON.Item.PictureURL.length - 1 && window.singleJSON.Item.PictureURL.length != 1) {
+				document.getElementById("acimg").src = window.singleJSON.Item.PictureURL[0];
+				document.getElementById("idimg").href = window.singleJSON.Item.PictureURL[0];
+				window.godIndex = 0;
+				loadImg(window.singleJSON.Item.PictureURL[0]);
+			} else if (window.godIndex == window.singleJSON.Item.PictureURL.length - 1 && window.singleJSON.Item.PictureURL.length == 1) {
+				window.godIndex = 0;
+			} else {
+				document.getElementById("acimg").src = window.singleJSON.Item.PictureURL[window.godIndex + 1];
+				document.getElementById("idimg").href = window.singleJSON.Item.PictureURL[window.godIndex + 1];
+				window.godIndex += 1;
+				loadImg(window.singleJSON.Item.PictureURL[window.godIndex + 1]);
+			}
+		}
+
+		function toggleThat(id) {
+			var itemObj = localStorage.getItem(id);
+			localStorage.removeItem(id);
+			genWish();
+			if (!document.getElementById("norecords_w").hidden) {
+				document.getElementById("norecords_w").hidden = true;
+			}
+			document.getElementById("d3").hidden = true;
+			document.getElementById("details_class").hidden = true;
+			document.getElementById("carti").innerHTML = "add_shopping_cart";
+			document.getElementById("carti").style.color = "black";
+			document.getElementById("cartBtn").setAttribute('onclick', 'toggleThis(' + id + ', ' + itemObj + ')');
+		}
+
+		function toggleThis(id, itemObj) {
+			localStorage.setItem(id, JSON.stringify(itemObj));
+			genWish();
+			if (!document.getElementById("norecords_w").hidden) {
+				document.getElementById("norecords_w").hidden = true;
+			}
+			document.getElementById("d3").hidden = true;
+			document.getElementById("details_class").hidden = true;
+			document.getElementById("carti").innerHTML = "remove_shopping_cart";
+			document.getElementById("carti").style.color = "orange";
+			document.getElementById("b3" + id).style.backgroundColor = "#BDBDBD";
+			document.getElementById("cartBtn").setAttribute('onclick', 'toggleThat(' + itemObj + ')');
+		}
+
+		var simGod = [];
+		var dupGod = [];
+
+		function similarItemJSON(id) {
+			simGod = [];
+			dupGod = [];
+			var sim1 = 'http://svcs.ebay.com/MerchandisingService?OPERATION-NAME=getSimilarItems&SERVICE-NAME=MerchandisingService&SERVICE-VERSION=1.1.0&CONSUMER-ID=';
+   			var sim2 = '&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&itemId=' + id + '&maxResults=20';
+
+			$.ajax({
+				url: '/similarItemJSON',
+				type: 'POST',
+				data: {
+					mis1 : sim1,
+					mis2 : sim2
+				},
+
+				success: function(data) {
+					var similarJSON = JSON.parse(data);
+					console.log(similarJSON);
+					try {
+						var simObj = similarJSON.getSimilarItemsResponse.itemRecommendations.item;
+						console.log(simObj);
+						if (simObj.length > 0) {
+							var str = '';
+							var ktr = '';
+							document.getElementById("norecords_s").hidden = true;
+							if (simObj.length <= 5) {
+								for (i = 0; i < simObj.length; i++) {
+									var imgu = '';
+									var url = '';
+									var tit = '';
+									var pr = '';
+									var sh = '';
+									var day = '';
+
+									try {
+										str += '<tr><td style="width: 12%;"><a href="' + simObj[i].imageURL + '" target="_blank"><img style="width: 95px; height: 95px" src="' + simObj[i].imageURL + '"></a></td>';
+										imgu = '' + simObj[i].imageURL + '';
+									} catch (Exception) {
+										str += '<tr>';
+										console.log("YOYOYO");
+									}
+									try {
+										str += '<td style="font-size: 14px"><a href="' + simObj[i].viewItemURL + '" style="color: darkcyan; text-decoration: none;">' + simObj[i].title + '</a></br>'; 
+										url = '' + simObj[i].viewItemURL + '';
+										tit = '' + simObj[i].title + '';
+									} catch (Exception) {
+										str += '<td style-"font-size: 14px">';
+									}
+									try {
+										if (simObj[i].buyItNowPrice.__value__ != '0.00') {
+											str += '<span style="color: palegreen;">Price: $' + simObj[i].buyItNowPrice.__value__ + '</span></br>';
+											pr = '' + simObj[i].buyItNowPrice.__value__ + '';
+										} else {
+											str += '<span style="color: palegreen;">Price: $' + simObj[i].currentPrice.__value__ + '</span></br>';
+											pr = '' + simObj[i].currentPrice.__value__ + '';
+										}
+									} catch (Exception) {
+										
+									}
+									try {
+										str += '<span style="color: orange;">Shipping Cost: $' + simObj[i].shippingCost.__value__ + '</span></br>';
+										sh = '' + simObj[i].shippingCost.__value__ + '';
+									} catch (Exception) {
+
+									}
+									try {
+										var acstr = simObj[i].timeLeft;
+										acstr = acstr.substring(acstr.lastIndexOf('P') + 1, acstr.lastIndexOf('D'));
+										str += '<span style="color: white;">Days Left: ' + acstr + '</span></br>';
+										day = acstr;
+									} catch (Exception) {
+
+									}
+									str += '</td></tr>';
+
+									var uniq = {
+										"img" : imgu,
+										"url" : url,
+										"title" : tit,
+										"price" : pr,
+										"ship" : sh,
+										"day" : day
+									};
+
+									simGod.push(uniq);
+								}
+								document.getElementById("showTab").hidden = true;
+							} else {
+								for (i = 0; i < 5; i++) {
+									var imgu = '';
+									var url = '';
+									var tit = '';
+									var pr = '';
+									var sh = '';
+									var day = '';
+
+									try {
+										str += '<tr><td style="width: 12%;"><a href="' + simObj[i].imageURL + '" target="_blank"><img style="width: 95px; height: 95px" src="' + simObj[i].imageURL + '"></a></td>';
+										imgu = '' + simObj[i].imageURL + '';
+									} catch (Exception) {
+										str += '<tr>';
+										console.log("YOYOYO");
+									}
+									try {
+										str += '<td style="font-size: 14px"><a href="' + simObj[i].viewItemURL + '" style="color: darkcyan; text-decoration: none;">' + simObj[i].title + '</a></br>'; 
+										url = '' + simObj[i].viewItemURL + '';
+										tit = '' + simObj[i].title + '';
+									} catch (Exception) {
+										str += '<td style-"font-size: 14px">';
+									}
+									try {
+										if (simObj[i].buyItNowPrice.__value__ != '0.00') {
+											str += '<span style="color: palegreen;">Price: $' + simObj[i].buyItNowPrice.__value__ + '</span></br>';
+											pr = '' + simObj[i].buyItNowPrice.__value__ + '';
+										} else {
+											str += '<span style="color: palegreen;">Price: $' + simObj[i].currentPrice.__value__ + '</span></br>';
+											pr = '' + simObj[i].currentPrice.__value__ + '';
+										}
+									} catch (Exception) {
+										
+									}
+									try {
+										str += '<span style="color: orange;">Shipping Cost: $' + simObj[i].shippingCost.__value__ + '</span></br>';
+										sh = '' + simObj[i].shippingCost.__value__ + '';
+									} catch (Exception) {
+
+									}
+									try {
+										var acstr = simObj[i].timeLeft;
+										acstr = acstr.substring(acstr.lastIndexOf('P') + 1, acstr.lastIndexOf('D'));
+										str += '<span style="color: white;">Days Left: ' + acstr + '</span></br>';
+										day = acstr;
+									} catch (Exception) {
+
+									}
+									str += '</td></tr>';
+
+									var uniq = {
+										"img" : imgu,
+										"url" : url,
+										"title" : tit,
+										"price" : pr,
+										"ship" : sh,
+										"day" : day
+									};
+
+									simGod.push(uniq);
+								}
+								for (i = 5; i < simObj.length; i++) {
+									var imgu = '';
+									var url = '';
+									var tit = '';
+									var pr = '';
+									var sh = '';
+									var day = '';
+
+									try {
+										ktr += '<tr><td style="width: 12%;"><a href="' + simObj[i].imageURL + '" target="_blank"><img style="width: 95px; height: 95px" src="' + simObj[i].imageURL + '"></a></td>';
+										imgu = '' + simObj[i].imageURL + '';
+									} catch (Exception) {
+										ktr += '<tr>';
+									}
+									try {
+										ktr += '<td style="font-size: 14px"><a href="' + simObj[i].viewItemURL + '" style="color: darkcyan; text-decoration: none;">' + simObj[i].title + '</a></br>'; 
+										url = '' + simObj[i].viewItemURL + '';
+										tit = '' + simObj[i].title + '';
+									} catch (Exception) {
+										str += '<td style-"font-size: 14px">';
+									}
+									try {
+										if (simObj[i].buyItNowPrice.__value__ != '0.00') {
+											ktr += '<span style="color: palegreen;">Price: $' + simObj[i].buyItNowPrice.__value__ + '</span></br>';
+											pr = '' + simObj[i].buyItNowPrice.__value__ + '';
+										} else {
+											ktr += '<span style="color: palegreen;">Price: $' + simObj[i].currentPrice.__value__ + '</span></br>';
+											pr = '' + simObj[i].currentPrice.__value__ + '';
+										}
+									} catch (Exception) {
+										
+									}
+									try {
+										ktr += '<span style="color: orange;">Shipping Cost: $' + simObj[i].shippingCost.__value__ + '</span></br>';
+										sh = '' + simObj[i].shippingCost.__value__ + '';
+									} catch (Exception) {
+
+									}
+									try {
+										var acstr = simObj[i].timeLeft;
+										acstr = acstr.substring(acstr.lastIndexOf('P') + 1, acstr.lastIndexOf('D'));
+										ktr += '<span style="color: white;">Days Left: ' + acstr + '</span></br>';
+										day = acstr;
+									} catch (Exception) {
+
+									}
+									ktr += '</td></tr>';
+
+									var uniq = {
+										"img" : imgu,
+										"url" : url,
+										"title" : tit,
+										"price" : pr,
+										"ship" : sh,
+										"day" : day
+									};
+
+									simGod.push(uniq);
+								}
+								document.getElementById("showTab").hidden = false;
+							}
+							document.getElementById("dType").value = '0';
+							document.getElementById("dOrder").disabled = true;
+							document.getElementById("simtab1").innerHTML = str;
+							document.getElementById("simtab2").innerHTML = ktr;
+							document.getElementById("simtab2").hidden = true;
+							document.getElementById("simContent").hidden = false;
+						} else {
+							document.getElementById("norecords_s").hidden = false;
+							document.getElementById("simContent").hidden = true;	
+						}
+					} catch (Exception) {
+						document.getElementById("norecords_s").hidden = false;
+						document.getElementById("simContent").hidden = true;
+					}
+
+					console.log(simGod);
+					dupGod = Object.assign(dupGod, simGod);
+				}
+			})
+		}
+
+		function changeOrder() {
+			changeType();			
+		}
+
+		function changeType() {
+			if (document.getElementById("dType").value == '0') {
+				document.getElementById("dOrder").disabled = true;
+			} else {
+				document.getElementById("dOrder").disabled = false;
+			}
+
+			if (document.getElementById("dType").value == '0') {
+				dupGod = Object.assign(dupGod, simGod);
+				console.log("YOX");
+			} else if (document.getElementById("dType").value == '1') {
+				if (document.getElementById("dOrder").value == '0')
+					dupGod.sort((a, b) => (a.title > b.title) ? 1 : -1);
+				else
+					dupGod.sort((a, b) => (a.title < b.title) ? 1 : -1);
+			} else if (document.getElementById("dType").value == '2') {
+				if (document.getElementById("dOrder").value == '0')
+					dupGod.sort((a, b) => (parseInt(a.day) > parseInt(b.day)) ? 1 : -1);
+				else
+					dupGod.sort((a, b) => (parseInt(a.day) < parseInt(b.day)) ? 1 : -1);
+			} else if (document.getElementById("dType").value == '3') {
+				if (document.getElementById("dOrder").value == '0')
+					dupGod.sort((a, b) => (parseFloat(a.price) > parseFloat(b.price)) ? 1 : -1);
+				else
+					dupGod.sort((a, b) => (parseFloat(a.price) < parseFloat(b.price)) ? 1 : -1);
+			} else {
+				if (document.getElementById("dOrder").value == '0')
+					dupGod.sort((a, b) => (parseFloat(a.ship) > parseFloat(b.ship)) ? 1 : -1);
+				else
+					dupGod.sort((a, b) => (parseFloat(a.ship) < parseFloat(b.ship)) ? 1 : -1);
+			}
+			console.log("C:")
+			console.log(dupGod);
+
+			if (dupGod.length > 5) {
+				var str = '';
+				for (i = 0; i < 5; i++) {
+					try {
+						str += '<tr><td style="width: 12%;"><a href="' + dupGod[i].img + '" target="_blank"><img style="width: 95px; height: 95px" src="' + dupGod[i].img + '"></a></td>';
+					} catch (Exception) {
+						str += '<tr>';
+						console.log("YOYOYO");
+					}
+					try {
+						str += '<td style="font-size: 14px"><a href="' + dupGod[i].url + '" style="color: darkcyan; text-decoration: none;">' + dupGod[i].title + '</a></br>'; 
+					} catch (Exception) {
+						str += '<td style-"font-size: 14px">';
+					}
+					try {
+						str += '<span style="color: palegreen;">Price: $' + dupGod[i].price + '</span></br>';
+					} catch (Exception) {
+						
+					}
+					try {
+						str += '<span style="color: orange;">Shipping Cost: $' + dupGod[i].ship + '</span></br>';
+					} catch (Exception) {
+
+					}
+					try {
+						str += '<span style="color: white;">Days Left: ' + dupGod[i].day + '</span></br>';
+					} catch (Exception) {
+
+					}
+					str += '</td></tr>';
+				}
+				document.getElementById("simtab1").innerHTML = str;
+				str = '';
+				for (i = 5; i < dupGod.length; i++) {
+					try {
+						str += '<tr><td style="width: 12%;"><a href="' + dupGod[i].img + '" target="_blank"><img style="width: 95px; height: 95px" src="' + dupGod[i].img + '"></a></td>';
+					} catch (Exception) {
+						str += '<tr>';
+						console.log("YOYOYO");
+					}
+					try {
+						str += '<td style="font-size: 14px"><a href="' + dupGod[i].url + '" style="color: darkcyan; text-decoration: none;">' + dupGod[i].title + '</a></br>'; 
+					} catch (Exception) {
+						str += '<td style-"font-size: 14px">';
+					}
+					try {
+						str += '<span style="color: palegreen;">Price: $' + dupGod[i].price + '</span></br>';
+					} catch (Exception) {
+						
+					}
+					try {
+						str += '<span style="color: orange;">Shipping Cost: $' + dupGod[i].ship + '</span></br>';
+					} catch (Exception) {
+
+					}
+					try {
+						str += '<span style="color: white;">Days Left: ' + dupGod[i].day + '</span></br>';
+					} catch (Exception) {
+
+					}
+					str += '</td></tr>';
+				}
+				document.getElementById("simtab2").innerHTML = str;
+			} else {
+				var str = '';
+				for (i = 0; i < dupGod.length; i++) {
+					try {
+						str += '<tr><td style="width: 12%;"><a href="' + dupGod[i].img + '" target="_blank"><img style="width: 95px; height: 95px" src="' + dupGod[i].img + '"></a></td>';
+					} catch (Exception) {
+						str += '<tr>';
+						console.log("YOYOYO");
+					}
+					try {
+						str += '<td style="font-size: 14px"><a href="' + dupGod[i].url + '" style="color: darkcyan; text-decoration: none;">' + dupGod[i].title + '</a></br>'; 
+					} catch (Exception) {
+						str += '<td style-"font-size: 14px">';
+					}
+					try {
+						str += '<span style="color: palegreen;">Price: $' + dupGod[i].price + '</span></br>';
+					} catch (Exception) {
+						
+					}
+					try {
+						str += '<span style="color: orange;">Shipping Cost: $' + dupGod[i].ship + '</span></br>';
+					} catch (Exception) {
+
+					}
+					try {
+						str += '<span style="color: white;">Days Left: ' + dupGod[i].day + '</span></br>';
+					} catch (Exception) {
+
+					}
+					str += '</td></tr>';
+				}
+				document.getElementById("simtab1").innerHTML = str;
+			}
+		}
+
+		var dummy = function() {
+			console.log("test");
+		}
+
+		function backList() {
+			var z = window.singleJSON.Item.ItemID;
+			console.log(z);
+			document.getElementById("sTab").hidden = true;
+			if (document.getElementById("resTab").classList.contains("btn-dark")) {
+				for (k = 0; k < document.getElementById("t1").rows.length; k++) {
+					if (document.getElementById("tr" + z) !== document.getElementById("t1").rows[k])
+						document.getElementById("t1").rows[k].style.backgroundColor = "transparent";
+				}
+				document.getElementById("prx").hidden = !document.getElementById("prx").hidden;
+				document.getElementById("tr" + z).style.backgroundColor = "#BDBDBD";
+				if (!document.getElementById("prx").hidden)
+					setTimeout(backList, 300);
+				else {
+					$("#d1").fadeIn(400);
+					document.getElementById("d1").hidden = false;
+					document.getElementById("prodTitle").hidden = true;
+					document.getElementById("d2").hidden = true;
+					document.getElementById("pageResults").hidden = false;
+					document.getElementById("fbwish").hidden = true;
+					document.getElementById("list_class").hidden = true;
+					document.getElementById("details_class").hidden = false;
+					document.getElementById("details").disabled = false;
+					document.getElementById("navbtn").hidden = true;
+				}
+			} else {
+				for (k = 0; k < document.getElementById("t3").rows.length; k++) {
+					if (document.getElementById("b3" + z) != document.getElementById("t3").rows[k])
+						document.getElementById("t3").rows[k].style.backgroundColor = "transparent";
+				}
+				document.getElementById("d1").hidden = true;
+				try {
+					document.getElementById("b3" + z).style.backgroundColor = "#BDBDBD";
+				} catch (Exception) {
+					wishPage();
+					if (Object.keys(localStorage).length == 0) {
+						document.getElementById("d3").hidden = true;
+						document.getElementById("prodTitle").hidden = true;
+						document.getElementById("d2").hidden = true;
+						document.getElementById("pageResults").hidden = true;
+						document.getElementById("fbwish").hidden = true;
+						document.getElementById("list_class").hidden = true;
+						document.getElementById("details_class").hidden = true;
+						document.getElementById("details").disabled = true;
+						document.getElementById("navbtn").hidden = true;
+						return;
+					}
+				}
+				document.getElementById("prodTitle").hidden = true;
+				document.getElementById("d2").hidden = true;
+				document.getElementById("d3").hidden = false;
+				document.getElementById("pageResults").hidden = true;
+				document.getElementById("fbwish").hidden = true;
+				document.getElementById("list_class").hidden = true;
+				document.getElementById("details_class").hidden = false;
+				if (localStorage.getItem(z))
+					document.getElementById("details").disabled = false;
+				document.getElementById("navbtn").hidden = true;
+			}
+			document.getElementById("gTab").hidden = true;
+		}
+
+		function wishPage() {
+			var wt = document.getElementById("wishTab");
+			var rt = document.getElementById("resTab");
+			wt.classList.remove("btn-light");
+			wt.classList.add("btn-dark");
+			rt.classList.remove("btn-dark");
+			rt.classList.add("btn-light");
+			document.getElementById("d1").hidden = true;
+			document.getElementById("d2").hidden = true;
+			document.getElementById("pageResults").hidden = true;
+			document.getElementById("norecords").hidden = true;
+			document.getElementById("list_class").hidden = true;
+			document.getElementById("details").disabled = true;
+			document.getElementById("navbtn").hidden = true;
+			document.getElementById("fbwish").hidden = true;
+			document.getElementById("prodTitle").hidden = true;
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("gTab").hidden = true;
+			document.getElementById("siTab").hidden = true;
+			if (localStorage.length === 0) {
+				document.getElementById("norecords_w").hidden = false;
+				document.getElementById("tb3").innerHTML = '';
+				document.getElementById("d3").hidden = true;
+				document.getElementById("details_class").hidden = true;
+			} else {
+				genWish();
+				document.getElementById("details_class").hidden = false;
+			}
+		}
+
+		function genWish() {
+			var d3t = '';
+			if (localStorage.length == 0) {
+				document.getElementById("tb3").innerHTML = d3t;
+				document.getElementById("norecords_w").hidden = false;
+				document.getElementById("d3").hidden = true;
+				document.getElementById("details_class").hidden = true;
+			} else {
+				var sum = 0;
+				for (i = 0; i < localStorage.length; i++) {
+					console.log(localStorage.getItem(localStorage.key(i)));
+					var jData = JSON.parse(localStorage.getItem(localStorage.key(i)));
+					if (jData == null) {
+
+					} else {
+						var tx = jData.w;
+						var ty = jData.e;
+						tx = tx.replace(/\"/g, '\'');
+						tx = tx.replace(/&quot;/g, '\'');
+						d3t += '<tr id="b3' + localStorage.key(i) + '"><td>' + (i + 1) + '</td><td><a href="' + jData.q + '" target="_blank"><img style = "height: 75px; width: 75px;" src="' + jData.q + '"></a></td>' + '<td style="color: #007bff;" onclick="singleItemJSON(' + localStorage.key(i) + ')"><span class="snap" data-toggle="tooltip" data-placement="bottom" title=' + '\'' + ty + '\' style="cursor: pointer; text-decoration: underline; white-space: nowrap;">' + tx + '</span></a></td>' + '<td>' + jData.r + '</td><td>' + jData.t + '</td><td style="white-space: nowrap;">' + jData.u + '</td><td><button type="button" id="xt' + localStorage.key(i) + '" class="btn btn-light" onclick="togleWish(' + localStorage.key(i) + ')"><i id="ixd' + localStorage.key(i) + '" class="material-icons" style="vertical-align: middle; color: orange">remove_shopping_cart</i></td></tr>';
+						sum += parseFloat(jData.r.substring(1)) * 100;
+						console.log(sum);
+						if (jData.t != "Free Shipping")	
+							sum += parseFloat(jData.t.substring(1)) * 100;
+					}
+				}
+				d3t += '<tr><td></td><td></td><td></td><td></td><td></td><td style="white-space: nowrap;"><b>Total Shopping</b></td><td><b>$' + (sum / 100) + '</b></td></tr>';
+				document.getElementById("tb3").innerHTML = d3t;
+				document.getElementById("norecords_w").hidden = true;
+				document.getElementById("d3").hidden = false;
+				document.getElementById("details_class").hidden = false;
+				document.getElementById("gTab").hidden = true;
+			}
+		}
+
+		function prodDetails() {
+			singleItemJSON(window.singleJSON.Item.ItemID);
+		}
+
+		try {
+			try {
+				if (window.dKey != window.singleJSON.Item.ItemID) {
+					document.getElementById("tr" + window.dKey).style.backgroundColor = "transparent";
+				}
+			} catch (Exception) {
+
+			}
+			try {
+				if (window.dKey != window.singleJSON.Item.ItemID) {
+					document.getElementById("b3" + window.dKey).style.backgroundColor = "transparent";
+				}
+			} catch (Exception) {
+
+			}
+		} catch (Exception) {
+
+		}
+
+		// SINGLE TAB CONTENT
+		function prodGen() {
+			document.getElementById("prodb").classList.add("active");
+			document.getElementById("photob").classList.remove("active");
+			document.getElementById("shipb").classList.remove("active");
+			document.getElementById("sellb").classList.remove("active");
+			document.getElementById("simb").classList.remove("active");
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("d2").hidden = false;
+			document.getElementById("gTab").hidden = true;
+			document.getElementById("siTab").hidden = true;
+		}
+
+		function photoGen() {
+			document.getElementById("tabx").innerHTML = '';
+			document.getElementById("prodb").classList.remove("active");
+			document.getElementById("photob").classList.add("active");
+			document.getElementById("shipb").classList.remove("active");
+			document.getElementById("sellb").classList.remove("active");
+			document.getElementById("simb").classList.remove("active");
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("d2").hidden = true;
+			document.getElementById("gTab").hidden = false;
+			document.getElementById("siTab").hidden = true;
+			var k = encodeURIComponent(window.window.singleJSON.Item.Title);
+			console.log(k);
+			k = k.replace(/%20/g, "+");
+			console.log(k);
+
+			$.ajax({
+				url: '/photoGen',
+				type: 'POST',
+				data: {
+					keyword : k
+				},
+
+				success: function(data) {
+					window.googleObj = data;
+					console.log(data);
+					actualGen(data);
+				}
+			})
+		}
+
+		function actualGen(data) {
+			var gImg = data.items;
+			var str = '';
+			try {
+				console.log("INSIDE TRY");
+				if (gImg.length > 0) {
+					console.log("GREATER THAN 0 LENGTH");
+					str = '<section id="googleImg">';
+					for (i = 0; i < gImg.length; i++) {
+						console.log("IMAGE" + i + " HERE: " + gImg[i].link);
+						str += '<a href="' + gImg[i].link + '" target="_blank" ><img src="' + gImg[i].link + '" />';
+					}
+					str += '</section>';
+				}
+				document.getElementById("gTab").innerHTML = str;
+			} catch (Exception) {
+				console.log("SOME EXCEPTION");
+			}
+		}
+
+		function shipGen() {
+			document.getElementById("tabx").innerHTML = '';
+			document.getElementById("prodb").classList.remove("active");
+			document.getElementById("photob").classList.remove("active");
+			document.getElementById("shipb").classList.add("active");
+			document.getElementById("sellb").classList.remove("active");
+			document.getElementById("simb").classList.remove("active");
+			document.getElementById("sTab").hidden = false;
+			document.getElementById("d2").hidden = true;
+			document.getElementById("gTab").hidden = true;
+			document.getElementById("siTab").hidden = true;
+
+			var str = '';
+			for (k = 0; k < Object.keys(godObject).length; k++) {
+				if (godObject[k].id == window.dKey) {
+					var shipObj = jsonObj.findItemsAdvancedResponse[0].searchResult[0].item[k].shippingInfo[0];
+					console.log(shipObj);
+					try {
+						if (shipObj.shippingServiceCost[0].__value__ == '0.0') 
+							str += '<tr><th align = "left">Shipping Cost</th><td align = "left">Free Shipping</td></tr>';
+						else
+							str += '<tr><th align = "left">Shipping Cost</th><td align = "left">$' + shipObj.shippingServiceCost[0].__value__ + '</td></tr>';
+					} catch (Exception) {
+
+					}
+
+					try {
+						if (shipObj.shipToLocations) {
+							str += '<tr><th align = "left">Shipping Locations</th><td align = "left">';
+							for (l = 0; l < shipObj.shipToLocations.length; l++) {
+								if (l > 0)
+									str += ', ' + shipObj.shipToLocations[l];
+								else
+									str += shipObj.shipToLocations[l];
+							}
+							str += '</td></tr>';
+						}
+					} catch (Exception) {
+
+					}
+
+					try {
+						if (shipObj.handlingTime[0] == '1')
+							str += '<tr><th align = "left">Handling Time</th><td align = "left">1 Day</td></tr>';
+						else 
+							str += '<tr><th align = "left">Handling Time</th><td align = "left">' + shipObj.handlingTime[0] + ' Days</td></tr>';
+					} catch (Exception) {
+
+					}
+
+					try {
+						if (shipObj.expeditedShipping[0] == 'true') {
+							str += '<tr><th align = "left">Expedited Shipping</th><td align = "left">'
+							str += '<i class="material-icons" style="color: green;">check</i>';
+							str += '</td></tr>';
+						} else {
+							str += '<tr><th align = "left">Expedited Shipping</th><td align = "left">'
+							str += '<i class="material-icons" style="color: red;">close</i>';
+							str += '</td></tr>';
+						}
+					} catch (Exception) {
+
+					}
+
+					try {
+						if (shipObj.oneDayShippingAvailable[0] == 'true') {
+							str += '<tr><th align = "left">One Day Shipping</th><td align = "left">'
+							str += '<i class="material-icons" style="color: green;">check</i>';
+							str += '</td></tr>';
+						} else {
+							str += '<tr><th align = "left">One Day Shipping</th><td align = "left">'
+							str += '<i class="material-icons" style="color: red;">close</i>';
+							str += '</td></tr>';
+						}
+					} catch (Exception) {
+
+					}
+
+					try {
+						if (jsonObj.findItemsAdvancedResponse[0].searchResult[0].item[k].returnsAccepted[0] == 'true') {
+							str += '<tr><th align = "left">Returns Accepted</th><td align = "left">'
+							str += '<i class="material-icons" style="color: green;">check</i>';
+							str += '</td></tr>';
+						} else {
+							str += '<tr><th align = "left">Returns Accepted</th><td align = "left">'
+							str += '<i class="material-icons" style="color: red;">close</i>';
+							str += '</td></tr>';
+						}
+					} catch (Exception) {
+
+					}
+
+					break;
+				}
+			}
+			if (k == Object.keys(godObject).length) {
+				console.log("ERROR: INITIAL REQUEST NEVER MADE!");
+				console.log("FIRST EBAY API CALL RESULTING IN THE WISHLIST ITEMS WAS NEVER MADE!");
+			}
+			document.getElementById("tabx").innerHTML = str;
+		}
+
+		function sellGen() {
+			document.getElementById("tabx").innerHTML = '';
+			document.getElementById("prodb").classList.remove("active");
+			document.getElementById("photob").classList.remove("active");
+			document.getElementById("shipb").classList.remove("active");
+			document.getElementById("sellb").classList.add("active");
+			document.getElementById("simb").classList.remove("active");
+			document.getElementById("sTab").hidden = false;
+			document.getElementById("d2").hidden = true;
+			document.getElementById("gTab").hidden = true;
+			document.getElementById("siTab").hidden = true;
+
+			var sellObj = window.singleJSON.Item.Seller;
+			
+			try {
+				var storeObj = window.singleJSON.Item.Storefront;
+			} catch (Exception) {
+
+			}
+
+			console.log(sellObj);
+
+			var str = '';
+			try {
+				str += '<tr><th colspan="2" style="text-align: center;" scope="colgroup">' + sellObj.UserID.toUpperCase() + '</th></tr>';
+			} catch (Exception) {
+
+			}
+
+			try {
+				str += '<tr><th align = "left">Feedback Score</th><td align = "left">' + sellObj.FeedbackScore + '</td></tr>';
+			} catch (Exception) {
+
+			}
+
+			try {
+				str += '<tr><th align = "left">Popularity</th><td align = "left"><div id="circle">';
+				str += sellObj.PositiveFeedbackPercent + '</div></td></tr>';
+			} catch (Exception) {
+				
+			}
+
+			try {
+				var fs = sellObj.FeedbackScore;
+				if (fs < 50)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:yellow">star_border</i></td>'; 
+				else if (fs < 100)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:blue">star_border</i></td>'; 
+				else if (fs < 500)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:turquoise">star_border</i></td>'; 
+				else if (fs < 1000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:purple">star_border</i></td>'; 
+				else if (fs < 5000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:red">star_border</i></td>'; 
+				else if (fs < 10000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:green">star_border</i></td>'; 
+				else if (fs < 25000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:yellow">stars</i></td>'; 
+				else if (fs < 50000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:turquoise">stars</i></td>'; 
+				else if (fs < 100000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:purple">stars</i></td>'; 
+				else if (fs < 500000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:red">stars</i></td>'; 
+				else if (fs < 1000000)
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:green">stars</i></td>'; 
+				else
+					str += '<tr><th align = "left">Feedback Rating Star</th><td align = "left"><i class="material-icons" style="color:silver">stars</i></td>'; 
+				str += '</tr>';
+			} catch (Exception) {
+				
+			}
+
+			try {
+				if (sellObj.TopRatedSeller) {
+					str += '<tr><th align = "left">Top Rated</th><td align = "left">'
+					str += '<i class="material-icons" style="color: green;">check</i>';
+					str += '</td></tr>';
+				}
+			} catch (Exception) {
+				
+			}
+
+			try {
+				str += '<tr><th>Store Name</th><td>' + storeObj.StoreName + '</td></tr>'
+			} catch (Exception) {
+				
+			}
+
+			try {
+				str += '<tr><th>Buy Product At</th><td><a href=' + storeObj.StoreURL + ' target="_blank">Store</a></td></tr>'
+			} catch (Exception) {
+
+			}
+
+			// str += '</tr>';
+			document.getElementById("tabx").innerHTML = str;
+			if (parseFloat(sellObj.PositiveFeedbackPercent) > 80) 
+				document.getElementById("circle").style.border = "3px solid green";
+			else if (parseFloat(sellObj.PositiveFeedbackPercent) > 40)
+				document.getElementById("circle").style.border = "3px solid orange";
+			else
+				document.getElementById("circle").style.border = "3px solid red";
+		}
+
+		function simGen() {
+			document.getElementById("tabx").innerHTML = '';
+			document.getElementById("prodb").classList.remove("active");
+			document.getElementById("photob").classList.remove("active");
+			document.getElementById("shipb").classList.remove("active");
+			document.getElementById("sellb").classList.remove("active");
+			document.getElementById("simb").classList.add("active");
+			document.getElementById("sTab").hidden = true;
+			document.getElementById("d2").hidden = true;
+			document.getElementById("gTab").hidden = true;
+			similarItemJSON(window.singleJSON.Item.ItemID);
+			document.getElementById("siTab").hidden = false;
+		}
+
+		function showTab() {
+			if (document.getElementById("showTab").innerHTML == 'Show More') {
+				document.getElementById("simtab2").hidden = false;
+				document.getElementById("showTab").innerHTML = 'Show Less';
+			} else {
+				document.getElementById("simtab2").hidden = true;
+				document.getElementById("showTab").innerHTML = 'Show More';
+			}
+		}
+
+	$("#ngZipcode").focusout(function() {
+        $('#zipli').hide();
+    });
+
+	</script>
+
+	<script>
+		var app = angular.module('prodFormApp', ['ngAnimate']);
+		app.controller('formController', function($scope, $http) {
+
+			$scope.required = true;
+			$scope.aZipcode = {};
+
+			$scope.resetBtnA = function() {
+				$scope.prodForm.$setUntouched();
+				$scope.prodForm.$setPristine();
+				$scope.prodForm.ngKeyword.$setValidity('required', false);
+				$scope.prodForm.ngKeyword.$setValidity('pattern', false);
+				$scope.prodForm.ngZipcode.$setValidity('required', true);
+				$scope.prodForm.ngLocation.$setViewValue("cur-loc");
+				$scope.prodForm.ngZipcode.$setViewValue('');
+				$scope.aZipcode = {};
+				resetBtn();
+			}
+
+			$scope.zipAuto = function(value) {
+				if(value=='')
+					return;
+				var output = [];
+				$http.get('http://api.geonames.org/postalCodeSearchJSON?postalcode_startsWith=' 
+					+ value + '&username=keshavkd&country=US&maxRows=5').then(function(result) {
+						console.log(result.data.postalCodes);
+						for(i = 0; i < result.data.postalCodes.length; i++) {
+							output.push(result.data.postalCodes[i].postalCode);
+						}
+						$scope.aZipcode = output;
+						console.log($scope.aZipcode);
+				});
+				return $scope.aZipcode;
+			}
+
+			$scope.fillZip = function(value) {
+				console.log("GREATERGOOD" + value);
+				document.getElementById("ngZipcode").value = value;
+				$scope.prodForm.ngZipcode.$setViewValue(value);
+				$scope.prodForm.ngZipcode.$setValidity('pattern', true);
+			}
+
+			$scope.checkBtn = function(value) {
+				return "cus-loc" == value;
+			}
+
+			$scope.getActive = function() {
+				if (document.activeElement === document.getElementById("ngZipcode"))
+					return true;
+				return false;
+			}
+
+			$scope.setLocationValidity = function() {
+				console.log("test");
+				$scope.prodForm.ngZipcode.$setViewValue('');
+			}
+
+			$scope.setRequiredValidity = function() {
+				$scope.prodForm.ngZipcode.$setViewValue(document.getElementById("ngZipcode").value);
+			}
+
+		});
+	</script>
+
+</body>
+</html>
