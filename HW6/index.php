@@ -208,7 +208,7 @@
 
 				if (!empty($_POST['CQ'])) {
 					$phpCleanQuery = "";
-					$phpCleanQuery = str_replace("&SECURITY-APPNAME=", "&SECURITY-APPNAME=KeshavKa-searchPa-PRD-816e2f5cf-4f9dedea", $_POST['CQ']);
+					$phpCleanQuery = str_replace("&SECURITY-APPNAME=", "&SECURITY-APPNAME=<Insert AppId Here>", $_POST['CQ']);
 					$phpResponse = file_get_contents($phpCleanQuery);
 					$phpCorrectResponse = "true";
 				}
