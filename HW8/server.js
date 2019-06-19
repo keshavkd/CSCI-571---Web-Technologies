@@ -4,11 +4,11 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 var app = express();
-var ebayId = 'KeshavKa-searchPa-PRD-816e2f5cf-4f9dedea';
+var ebayId = '<Sensitive Key Information>';
 
 var gId = {
-	id: '009008570453899811991:qpr9s7mjze0',
-	key: 'AIzaSyAd_9ikQMP4EtOdqMDxhQS-r9vnZu0IaPI'
+	id: '<Sensitive ID Information>',
+	key: '<Sensitive Key Information>'
 }
 
 // app.use(bodyParser.json());
